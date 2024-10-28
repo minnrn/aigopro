@@ -19,19 +19,15 @@ async function sendMessage() {
     displayMessage(userMessage, 'user-message');
     inputField.value = '';
 
+    // Menggabungkan prompt dan pesan pengguna ke dalam format query string
+    const promptText = encodeURIComponent(promptData.prompt || "");
+    const userText = encodeURIComponent(userMessage);
+    const apiKey = 'vw5gHq3R';
+    const url = `https://api.betabotz.eu.org/api/search/openai-chat?text=${promptText} ${userText}&apikey=${apiKey}`;
+
     try {
-        const response = await fetch('https://api.betabotz.eu.org/api/search/openai-chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                message: [
-                    { role: 'system', content: promptData.prompt },
-                    { role: 'user', content: userMessage }
-                ],
-                apikey: 'vw5gHq3R'
-            })
+        const response = await fetch(url, {
+            method: 'GET'
         });
         
         const data = await response.json();
